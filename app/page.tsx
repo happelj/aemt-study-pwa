@@ -37,7 +37,7 @@ export default function AEMTStudyApp() {
   const [showAnswer, setShowAnswer] = useState(false);
   const [quizIndex, setQuizIndex] = useState(0);
   const [selectedChoice, setSelectedChoice] = useState("");
-  const [isCorrect, setIsCorrect] = useState(null);
+  const [isCorrect, setIsCorrect] = useState<boolean | null>(null);
 
   return (
     <div className="p-4 max-w-xl mx-auto">
