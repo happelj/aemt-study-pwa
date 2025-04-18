@@ -1,103 +1,105 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import { useState } from 'react';
+import { Card, CardContent } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
+
+const flashcards = [
+  { question: "What is the dose of Epinephrine 1:1,000 IM for anaphylaxis?", answer: "0.3–0.5 mg IM every 5–15 minutes as needed" },
+  { question: "What does APGAR stand for?", answer: "Appearance, Pulse, Grimace, Activity, Respiration" },
+  { question: "What IV fluid is used for hypovolemic shock?", answer: "Normal Saline or Lactated Ringers" },
+  { question: "What is the common side effect of Albuterol?", answer: "Tachycardia" },
+  { question: "What is the glucose dose for an adult with hypoglycemia?", answer: "25–50 mL D50 IV or D10 titrated to effect" },
+];
+
+const quizQuestions = [
+  {
+    question: "Which airway device is considered supraglottic?",
+    choices: ["OPA", "NPA", "i-gel", "ET Tube"],
+    answer: "i-gel"
+  },
+  {
+    question: "What is the most appropriate fluid for a burn patient?",
+    choices: ["D5W", "NS", "LR", "Hypertonic Saline"],
+    answer: "LR"
+  },
+  {
+    question: "Which medication reverses opioid overdose?",
+    choices: ["Glucagon", "Narcan", "Zofran", "Nitroglycerin"],
+    answer: "Narcan"
+  }
+];
+
+export default function AEMTStudyApp() {
+  const [currentCard, setCurrentCard] = useState(0);
+  const [showAnswer, setShowAnswer] = useState(false);
+  const [quizIndex, setQuizIndex] = useState(0);
+  const [selectedChoice, setSelectedChoice] = useState("");
+  const [isCorrect, setIsCorrect] = useState(null);
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm/6 text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-[family-name:var(--font-geist-mono)] font-semibold">
-              app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <div className="p-4 max-w-xl mx-auto">
+      <h1 className="text-2xl font-bold mb-4 text-center">AEMT Study PWA</h1>
+      <Tabs defaultValue="flashcards">
+        <TabsList className="grid w-full grid-cols-2">
+          <TabsTrigger value="flashcards">Flashcards</TabsTrigger>
+          <TabsTrigger value="quiz">Quiz</TabsTrigger>
+        </TabsList>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
+        <TabsContent value="flashcards">
+          <Card className="mt-4">
+            <CardContent className="p-4">
+              <p className="text-lg font-semibold">{flashcards[currentCard].question}</p>
+              {showAnswer && <p className="mt-2 text-green-600">{flashcards[currentCard].answer}</p>}
+              <div className="mt-4 space-x-2">
+                <Button onClick={() => setShowAnswer(!showAnswer)}>
+                  {showAnswer ? "Hide" : "Show"} Answer
+                </Button>
+                <Button onClick={() => {
+                  setCurrentCard((currentCard + 1) % flashcards.length);
+                  setShowAnswer(false);
+                }}>Next</Button>
+              </div>
+            </CardContent>
+          </Card>
+        </TabsContent>
+
+        <TabsContent value="quiz">
+          <Card className="mt-4">
+            <CardContent className="p-4">
+              <p className="text-lg font-semibold">{quizQuestions[quizIndex].question}</p>
+              <div className="mt-4 space-y-2">
+                {quizQuestions[quizIndex].choices.map((choice) => (
+                  <Button
+                    key={choice}
+                    variant="outline"
+                    className="w-full justify-start"
+                    onClick={() => {
+                      setSelectedChoice(choice);
+                      setIsCorrect(choice === quizQuestions[quizIndex].answer);
+                    }}>
+                    {choice}
+                  </Button>
+                ))}
+              </div>
+              {selectedChoice && (
+                <p className={`mt-4 ${isCorrect ? "text-green-600" : "text-red-600"}`}>
+                  {isCorrect ? "Correct!" : `Wrong! Correct answer: ${quizQuestions[quizIndex].answer}`}
+                </p>
+              )}
+              <Button className="mt-4" onClick={() => {
+                setQuizIndex((quizIndex + 1) % quizQuestions.length);
+                setSelectedChoice("");
+                setIsCorrect(null);
+              }}>
+                Next Question
+              </Button>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
     </div>
   );
 }
